@@ -1,5 +1,5 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html>
   <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
@@ -10,48 +10,38 @@
 
     <title>Hello, world!</title>
   </head>
-  <body>
-    <h1>Welcome, Join!</h1>
-
+<body>
 	<nav class="nav nav-pills nav-fill">
 	  <a class="nav-item nav-link active" href="index.html">Home</a>
 	  <a class="nav-item nav-link" href="form.html">Join</a>
 	  <a class="nav-item nav-link" href="#">Link</a>
-	  <a class="nav-item nav-link disabled" href="#">Disabled</a>
 	</nav>
 
-	<div class="join-container">
-		<form action="/create" method="post">
-
-		  <div class="form-group">
-		    <label for="exampleInputPassword1">userId</label>
-		    <input type="text" class="form-control" name="userId" placeholder="userId">
-		  </div>
-
-		  <div class="form-group">
-		    <label for="exampleInputPassword1">name</label>
-		    <input type="text" class="form-control" name="name" placeholder="name">
-		  </div>
-
-		  <div class="form-group">
-		    <label for="exampleInputEmail1">Email address</label>
-		    <input type="email" class="form-control" name="email" aria-describedby="emailHelp" placeholder="Enter email">
-		  </div>
-
-		  <div class="form-group">
-		    <label for="exampleInputPassword1">Password</label>
-		    <input type="password" class="form-control" name="password" placeholder="Password">
-		  </div>
-
-		  <button type="submit" class="btn btn-primary">Submit</button>
-		  
-		</form>
-	</div>
-
+	<table class="table table-dark">
+	  <thead>
+	    <tr>
+	      <th scope="col">ID</th>
+	      <th scope="col">PASSWORD</th>
+	      <th scope="col">NAME</th>
+	      <th scope="col">EMAIL</th>
+	    </tr>
+	  </thead>
+	  <tbody>
+		{{#users}}
+		    <tr>
+				<td>{{userId}}</td>
+				<td>{{password}}</td>
+				<td>{{name}}</td>
+				<td>{{email}}</td>	
+			</tr>
+		{{/users}}
+	  </tbody>
+	</table>	
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="/webjars/jquery/3.3.1/dist/jquery.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
     <script src="/webjars/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
-  </body>
+	
+</body>
 </html>
