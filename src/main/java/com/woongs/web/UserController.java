@@ -36,20 +36,20 @@ public class UserController {
 			return "redirect:/users/loginForm";
 		}
 		
-		if(!user.getPassword().equals(password)) {
+		if(!user.matchPassword(password)) {
 			System.out.println("패스워드가 동일하지 않습니다.");
 			return "redirect:/users/loginForm";
 		}
 		
 		System.out.println("user login session set come!");
-		session.setAttribute("user", user); // 세션에 성공한 정보 저장
+		session.setAttribute(HttpSessionUtils.USER_SESSION_KEY, user); // 세션에 성공한 정보 저장
 		
 		return "redirect:/";
 	}	
 	
 	@GetMapping("/logout")
 	public String logout(HttpSession session) {
-		session.removeAttribute("user");
+		session.removeAttribute(HttpSessionUtils.USER_SESSION_KEY);
 		
 		return "redirect:/";
 	}
@@ -74,16 +74,38 @@ public class UserController {
 	}
 	
 	@GetMapping("{id}/form")
-	public String updateForm(@PathVariable Long id, Model model) {
+	public String updateForm(@PathVariable Long id, Model model, HttpSession session) {
+	
+		if(!HttpSessionUtils.isLoginUser(session)) {
+			return "redirect:/users/loginForm";
+		}
+		
+		User sessionedUser = HttpSessionUtils.getUserFromSession(session);
+		
+		if(!sessionedUser.matchId(id)) {
+			throw new IllegalStateException("자신의 정보만 수정할 수 있습니다.");
+		}
+				
 		System.out.println("id/form come! "+userRepository.findById(id).get());
 		model.addAttribute("user", userRepository.findById(id).get()); // ID에 따른 정보 조회후, model에 담음
 		return "/user/updateForm";
 	}
 	
 	@PutMapping("/{id}")
-	public String update(@PathVariable Long id, User newUser) {
+	public String update(@PathVariable Long id, User updatedUser, HttpSession session) {
+		
+		if(!HttpSessionUtils.isLoginUser(session)) {
+			return "redirect:/users/loginForm";
+		}
+		
+		User sessionedUser = HttpSessionUtils.getUserFromSession(session);
+		
+		if(!sessionedUser.matchId(id)) {
+			throw new IllegalStateException("자신의 정보만 수정할 수 있습니다.");
+		}
+		
 		User user = userRepository.findById(id).get();
-		user.update(newUser); // vo에 새로받은 user vo를 set한다.
+		user.update(updatedUser); // vo에 새로받은 user vo를 set한다.
 		userRepository.save(user);
 		return "redirect:/users";
 	}
